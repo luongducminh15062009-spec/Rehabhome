@@ -1,174 +1,171 @@
-# RehabHome AI
+# RehabHome
 
-Ứng dụng đồng hành xây dựng cơ thể khỏe mạnh và tinh thần cân bằng: kế hoạch tập luyện, theo dõi bữa ăn / nước / giấc ngủ, ghi cảm xúc, bài viết sức khỏe và thông báo nhắc nhở.
+An AI-powered health support application designed to help cancer patients maintain physical and mental well-being during treatment and recovery at home.
 
----
-
-## Tính năng chính
-
-| Tab / Luồng | Nội dung |
-|-------------|----------|
-| **Trang chủ** | Tổng quan calo, macro, nước, ngủ, BMI/TDEE, mood tracker, kế hoạch hôm nay |
-| **Kế hoạch tập** | Mục tiêu, lịch tuần, tiến độ, thư viện bài tập, thêm / thay thế / hoàn thành buổi tập |
-| **Bữa ăn** | Log bữa sáng / trưa / tối / ăn vặt theo ngày |
-| **Bài viết** | Dinh dưỡng, lối sống, mẹo nấu ăn |
-| **Cá nhân** | Profile, BMR, thông báo, đổi mật khẩu, giới thiệu / hỗ trợ / điều khoản / bảo mật |
-| **Onboarding** | Đăng ký → thiết lập profile (giới tính, tuổi, chiều cao, cân nặng, mục tiêu, lịch tập, sức khỏe) |
+**Field:** HealthTech  
+**Author:** Luong Duc Minh
 
 ---
 
-## Công nghệ
+## Introduction
 
-| Thành phần | Stack |
-|------------|--------|
-| App | React Native, Expo SDK ~53, Expo Router, NativeWind (Tailwind) |
-| State / data | React Query, Zustand, React Hook Form, Zod |
-| Backend | Supabase (Auth, PostgreSQL, RLS, Realtime, Storage) |
-| UI | iconsax-react-native, react-native-svg, expo-linear-gradient |
+RehabHome is designed to help cancer patients:
 
----
+1. Engage in gentle physical exercises and maintain physical function throughout treatment and recovery.
+2. Access easy-to-understand educational resources on nutrition and health management.
+3. Ask basic health-related questions through an AI-powered chatbot whenever they need assistance.
 
-## Yêu cầu môi trường
+RehabHome provides general health information and basic support. **It does not replace professional medical advice, diagnosis, or treatment.**
 
-| Công nghệ | Khuyến nghị |
-|-----------|-------------|
-| Node.js | 18.x hoặc 20.x LTS |
-| npm | 9.x+ |
-| Git | Bất kỳ |
-| Supabase | Tài khoản + project mới |
-| iOS | Xcode (Mac) khi `npm run ios` |
-| Android | Android Studio + SDK khi `npm run android` |
-| Expo Go | Tùy chọn, quét QR từ `npm start` |
+## Motivation
 
----
+- Cancer patients often experience persistent fatigue, reduced physical capacity, stress, and anxiety.
+- Spending most of their time at home can make it difficult to participate regularly in rehabilitation programs.
+- Patients need accessible guidance on gentle physical activities that account for their individual health conditions.
+- Reliable and easy-to-understand resources on nutrition, mental well-being, and basic health questions are essential for informed self-care.
 
-## Cài đặt nhanh
+## Target Users
+
+- Cancer patients undergoing chemotherapy, radiation therapy, or recovering from surgery.
+- Family members, caregivers, and others who support cancer patients throughout their recovery.
+
+**Core challenges:** Persistent fatigue, reduced physical capacity, anxiety, and limited access to ongoing rehabilitation support.
+
+## Features
+
+| # | Feature | Description |
+|---|---|---|
+| 1 | **Exercise Library** | Search for and explore gentle exercises, including diaphragmatic breathing, shoulder rotations, lateral neck stretches, and seated knee extensions. Each exercise includes video demonstrations, detailed instructions, and safety precautions. |
+| 2 | **Personalized Exercise Plans** | Collect user health profiles, including health status, fatigue levels, and mobility capabilities, to recommend weekly exercise schedules. Display goals, progress, and exercise frequency. |
+| 3 | **Health Progress Tracking** | Record exercise sessions, daily energy levels, and moods. Review historical data through activity logs, charts, and weekly reports. |
+| 4 | **Cancer Care Knowledge Hub** | Provide articles and videos covering nutrition, healthy lifestyles, cooking, fatigue management, and mental well-being. |
+| 5 | **AI Health Q&A Chatbot** | Answer basic health-related questions using the application's knowledge base and recommend relevant exercises and educational resources. |
+
+## Technology Stack
+
+### Frontend (Mobile)
+
+- **React Native** — Cross-platform mobile application development
+- **Expo SDK ~53** — Development and deployment tooling
+- **TypeScript** — Type-safe application development
+- **Expo Router** — File-based navigation
+- **NativeWind / Tailwind CSS** — User interface styling
+- **Zustand** — Global state management
+- **React Query** — Server-state management and data fetching
+- **React Hook Form + Zod** — Form handling and data validation
+
+### Backend and AI
+
+- **Supabase**
+  - PostgreSQL for database management
+  - Supabase Auth with JWT-based authentication
+  - Row Level Security (RLS) for database access control
+  - Realtime for WebSocket-based updates
+  - Storage for profile images and other image assets
+- **OpenRouter + GPT-4o-mini** — AI-powered chatbot responses
+
+## Getting Started
+
+> The following instructions are a reference setup for an Expo and Supabase application. Adjust the commands, environment variables, and configuration to match the actual source code.
+
+### Prerequisites
+
+- Node.js and npm
+- Expo Go or an Android/iOS simulator
+- A Supabase project
+- An OpenRouter API key for the AI chatbot
+
+### Installation
+
+**1. Clone the repository**
 
 ```bash
-git clone <url-repo> fit-mind
-cd fit-mind
+git clone https://github.com/luongducminh15062009-spec/Rehabhome.git
+cd Rehabhome
+```
+
+**2. Install dependencies**
+
+```bash
 npm install
 ```
 
-### Biến môi trường
+**3. Configure environment variables**
 
-Sao chép `.env.example` thành `.env` (nếu có) hoặc tạo `.env` ở thư mục gốc:
-
-```env
-EXPO_PUBLIC_SUPABASE_URL=https://xxxxx.supabase.co
-EXPO_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
-```
-
-Lấy URL và **anon key** tại: Supabase Dashboard → **Project Settings** → **API**.
-
-> Hiện `src/lib/supabase.ts` có thể đang hardcode URL/key. Nên chuyển sang `process.env.EXPO_PUBLIC_*` trước khi đổi project.
-
-**Không** commit `.env` hoặc `service_role` key lên Git.
-
----
-
-## Setup Supabase
-
-Tạo project trên [supabase.com](https://supabase.com), mở **SQL Editor**, chạy các file trong `supabase/` **theo thứ tự** dưới đây.
-
-### Schema & migration (bắt buộc)
-
-| # | File | Mô tả |
-|---|------|--------|
-| 1 | `schema.sql` **hoặc** `setup_steps.sql` | Chọn **một**. Schema gốc: `profiles`, weight/water/meal, articles + RLS + trigger tạo profile. `setup_steps.sql` dùng khi muốn **reset** DB (DROP rồi tạo lại). |
-| 2 | `add_profile_workout_health_fields.sql` | Cột lịch tập / mục tiêu chi tiết / tình trạng sức khỏe trên `profiles`. |
-| 3 | `add_exercise_sleep_tables.sql` | `exercise_logs`, `sleep_logs`. |
-| 4 | `add_meal_type_column.sql` | Cột `meal_type` (breakfast/lunch/snack/dinner). |
-| 5 | `mood_logs_schema.sql` | Bảng ghi cảm xúc theo ngày. |
-| 6 | `workout_plan_schema.sql` | Kế hoạch tuần (`workout_plan_items`) — đồng bộ Home & tab Kế hoạch tập. |
-| 7 | `notifications_schema.sql` | `notifications`, `notification_settings`, trigger chào mừng / mục tiêu. |
-| 8 | `add_notification_triggers.sql` | Cập nhật logic trigger thông báo. Sau đó có thể: `DROP TRIGGER IF EXISTS create_notification_settings_trigger ON public.profiles;` nếu trùng. |
-| 9 | `enable_realtime_notifications.sql` | Bật Realtime cho `notifications`. |
-| 10 | `fix_meal_logs_policy.sql` | Policy DELETE cho `meal_logs`. |
-| 11 | `storage_policies.sql` | Policy Storage avatar (bucket `profiles`). |
-| 12 | `grant_table_permissions.sql` | (Nếu cần) cấp quyền bảng cho role `authenticated`. |
-| 13 | `create_profiles_storage_bucket.sql` | (Tùy chọn) tạo bucket bằng SQL; hoặc tạo tay trên Dashboard. |
-
-> Nếu gặp lỗi `42501: must be owner of table users` khi chạy trigger trên `auth.users`: bỏ qua dòng trigger trong `schema.sql` và tạo profile trong app sau `signUp` (xem comment trong file SQL).
-
-### Seed dữ liệu (khuyến nghị)
-
-| File | Mô tả |
-|------|--------|
-| `meals_data.sql` | Món ăn mẫu |
-| `seed_articles_simple.sql` | Bài viết mẫu |
-
-Chạy **sau** các bước schema ở trên.
-
-### Storage bucket (avatar)
-
-1. Dashboard → **Storage** → **New bucket**.
-2. Tên: **`profiles`** (Public nếu muốn URL công khai).
-3. Chạy `storage_policies.sql`.
-
-### Auth
-
-- **Authentication → Providers**: bật **Email**.
-- Redirect URL / deep link: scheme app `myapp://` (xem `app.json`) nếu dùng reset mật khẩu / verify email.
-
----
-
-## Chạy app
+Create a `.env` file based on `.env.example`:
 
 ```bash
-# Dev server
-npm start
-
-# Native (tùy chọn)
-npm run ios
-npm run android
-
-# Web
-npm run web
+cp .env.example .env
 ```
 
-- Quét QR bằng **Expo Go**, hoặc nhấn **i** / **a** trên simulator/emulator.
+Add the required configuration values:
 
----
-
-## Cấu trúc thư mục (rút gọn)
-
-```
-fit-mind/
-├── assets/                 # Ảnh, icon, logo
-├── src/
-│   ├── app/                # Expo Router (auth, tabs, screens)
-│   ├── components/         # UI (home, meals, workout, mood, …)
-│   ├── constants/          # Route, images
-│   ├── context/            # Auth, date, notification
-│   ├── modules/            # Auth, profile-setup, user-profile
-│   ├── services/           # Supabase services (home, mood, workout, meals, …)
-│   └── types/
-├── supabase/               # Schema, migration, seed SQL
-├── app.json
-└── package.json
+```env
+EXPO_PUBLIC_SUPABASE_URL=
+EXPO_PUBLIC_SUPABASE_ANON_KEY=
+OPENROUTER_API_KEY=
 ```
 
----
+The variable names above are examples. Verify that they match the application's actual configuration.
 
-## Xử lý lỗi thường gặp
+**4. Start the application**
 
-| Vấn đề | Cách xử lý |
-|--------|------------|
-| Không kết nối Supabase | Kiểm tra URL/anon key và network project |
-| RLS chặn query | Đã login? Đã chạy đủ schema + policy? |
-| Realtime thông báo không về | Đã chạy `enable_realtime_notifications.sql`? |
-| Upload avatar lỗi | Bucket `profiles` + `storage_policies.sql` |
-| Kế hoạch tuần / mood trống | Đã chạy `workout_plan_schema.sql` và `mood_logs_schema.sql`? |
-| Trigger `auth.users` lỗi owner | Bỏ trigger, tạo profile sau signUp trong app |
+```bash
+npx expo start
+```
 
----
+Scan the QR code using Expo Go, or launch the application in an Android or iOS simulator.
 
-## Phiên bản
+### Security Notes
 
-- App: **Rehab Home** `1.0.0` (`com.fit.mind`)
-- Package name nội bộ: `expo-health` (có thể đổi sau khi publish)
+- Never expose secret API keys, especially the OpenRouter API key, in client-side application code.
+- Route AI requests through a secure server-side endpoint, such as a Supabase Edge Function.
+- Configure appropriate Row Level Security policies to protect users' personal and health-related data.
+- Do not commit `.env` files or other files containing credentials to the repository.
 
----
+## Development Process
 
-Sau khi setup xong: đăng ký → hoàn tất profile setup → dùng Home, kế hoạch tập, bữa ăn, mood và bài viết trên dữ liệu Supabase của bạn.
+1. **Identify the Need:** Explore the challenges cancer patients face when accessing rehabilitation support at home.
+2. **Define the Product:** Establish the core features, target users, and rehabilitation support objectives.
+3. **Build the Prototype:** Develop initial versions of the core application features.
+4. **Design the User Experience:** Create an accessible and user-friendly interface for patients and caregivers.
+5. **Evaluate Usability:** Assess the application's usability and collect feedback for improvement.
+6. **Conduct a Small-Group Pilot:** Introduce the application to a small group of peers, friends, and family members to gather feedback and refine the user experience.
+
+## Project Outcomes
+
+RehabHome currently aims to provide the following capabilities:
+
+- A platform for accessing gentle exercise guidance at home.
+- A system for tracking health-related activities and progress.
+- A library of educational resources on cancer care and general well-being.
+- An AI-powered chatbot for basic health-related questions.
+
+## User Feedback
+
+> "RehabHome is easy to use and helps me follow rehabilitation exercises at home. The clear instructions make the recovery process more convenient."
+>
+> — Nhat Minh
+
+> "I really like the idea behind RehabHome. Adding more exercise videos and personalized rehabilitation plans would make it even more useful."
+>
+> — Ha Thi Oanh
+
+*Note: Include testimonials only when they reflect genuine feedback from actual users and you have permission to publish them.*
+
+## Future Roadmap
+
+| Phase | Planned Development |
+|---|---|
+| 1 | Refine existing features and expand the exercise library based on patients' needs. |
+| 2 | Incorporate feedback from patients, caregivers, and healthcare professionals. |
+| 3 | Explore AI-driven personalization based on rehabilitation progress and individual health needs. |
+| 4 | Collaborate with healthcare professionals to improve the quality and reliability of the application's guidance. |
+| 5 | Expand pilot testing to a broader range of users and communities. |
+| 6 | Scale the platform to make at-home rehabilitation support accessible to more cancer patients. |
+
+## Contact
+
+- **Author:** Luong Duc Minh
+- **Email:** luongducminh15062009@gmail.com
+- **Phone / WhatsApp:** +84 936 150 609
